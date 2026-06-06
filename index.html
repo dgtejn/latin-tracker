@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Latin Lessons — Attendance Tracker</title>
+<title>Latin Lessons — Tracker</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -22,233 +22,93 @@
   --purple-bg: #ede9f7;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-}
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-/* decorative latin quote strip */
-.top-strip {
-  background: var(--text);
-  color: #faf8f4;
-  text-align: center;
-  padding: 8px;
-  font-family: 'Playfair Display', serif;
-  font-size: 12px;
-  letter-spacing: 2px;
-  opacity: 0.85;
-}
+.top-strip { background: var(--text); color: #faf8f4; text-align: center; padding: 8px; font-family: 'Playfair Display', serif; font-size: 12px; letter-spacing: 2px; opacity: 0.85; }
 
-header {
-  padding: 2.5rem 2rem 1.5rem;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
-  max-width: 900px;
-  margin: 0 auto;
-}
-.header-left h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 32px;
-  font-weight: 600;
-  line-height: 1.1;
-}
-.header-left p {
-  font-size: 13px;
-  color: var(--muted);
-  margin-top: 6px;
-  font-weight: 300;
-}
-.mode-toggle {
-  display: flex;
-  gap: 6px;
-}
-.mode-btn {
-  padding: 8px 18px;
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  background: transparent;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  color: var(--muted);
-  cursor: pointer;
-  transition: all 0.2s;
-}
+header { padding: 2.5rem 2rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1rem; max-width: 960px; margin: 0 auto; }
+.header-left h1 { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 600; line-height: 1.1; }
+.header-left p { font-size: 13px; color: var(--muted); margin-top: 6px; font-weight: 300; }
+
+.mode-toggle { display: flex; gap: 6px; }
+.mode-btn { padding: 8px 18px; border: 1px solid var(--border); border-radius: 24px; background: transparent; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--muted); cursor: pointer; transition: all 0.2s; }
 .mode-btn:hover { border-color: var(--text); color: var(--text); }
-.mode-btn.active {
-  background: var(--text);
-  color: var(--bg);
-  border-color: var(--text);
-}
+.mode-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
 
-main { max-width: 900px; margin: 0 auto; padding: 2rem; }
+main { max-width: 960px; margin: 0 auto; padding: 2rem; }
 
-/* summary row */
-.summary {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 12px;
-  margin-bottom: 2.5rem;
-}
-.metric {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 1.2rem 1.5rem;
-}
-.metric-label {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
-  color: var(--muted);
-  font-weight: 500;
-  margin-bottom: 6px;
-}
-.metric-val {
-  font-family: 'Playfair Display', serif;
-  font-size: 28px;
-  color: var(--text);
-}
-.metric-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 2.5rem; }
+.metric { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem 1.5rem; }
+.metric-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted); font-weight: 500; margin-bottom: 6px; }
+.metric-val { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--text); }
 
-/* cards */
-.section-label {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: var(--muted);
-  font-weight: 500;
-  margin-bottom: 1rem;
-}
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
-}
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 1.5rem;
-  transition: box-shadow 0.2s;
-}
+.section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); font-weight: 500; margin-bottom: 1rem; }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; transition: box-shadow 0.2s; }
 .card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
-.card-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 1.2rem;
-}
-.avatar {
-  width: 42px; height: 42px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px; font-weight: 500; flex-shrink: 0;
-  font-family: 'Playfair Display', serif;
-}
+.card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 1.2rem; }
+.avatar { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; flex-shrink: 0; font-family: 'Playfair Display', serif; }
 .card-name { font-size: 16px; font-weight: 500; }
 .card-rate { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
-.dots { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.2rem; }
-.ldot {
-  width: 26px; height: 26px; border-radius: 50%;
-  border: 1.5px solid var(--border);
-  background: var(--bg);
-  cursor: pointer;
-  transition: transform 0.15s, background 0.15s;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px;
-  position: relative;
-}
-.ldot:hover { transform: scale(1.2); }
+.dots { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.2rem; }
+.dot-wrap { display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; }
+.ldot { width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--border); background: var(--bg); transition: transform 0.15s, background 0.15s; position: relative; }
+.dot-wrap:hover .ldot { transform: scale(1.2); }
 .ldot.present { background: var(--present); border-color: var(--present); }
-.ldot.absent  { background: var(--absent);  border-color: var(--absent);  }
-.ldot .lesson-tip {
-  position: absolute;
-  bottom: 130%; left: 50%; transform: translateX(-50%);
-  background: var(--text); color: var(--bg);
-  font-size: 11px; padding: 4px 8px; border-radius: 6px;
-  white-space: nowrap; pointer-events: none;
-  opacity: 0; transition: opacity 0.15s;
-}
-.ldot:hover .lesson-tip { opacity: 1; }
+.ldot.absent  { background: var(--absent);  border-color: var(--absent); }
+.dot-emoji { font-size: 12px; line-height: 1; min-height: 14px; }
 
-.card-stats { display: flex; gap: 16px; }
+.card-stats { display: flex; gap: 16px; margin-bottom: 0.5rem; }
 .cstat { text-align: center; }
 .cstat-val { font-family: 'Playfair Display', serif; font-size: 20px; }
 .cstat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-top: 2px; }
 
-.fire-badge {
-  display: inline-flex; align-items: center; gap: 5px;
-  background: var(--gold-bg); color: var(--gold);
-  font-size: 12px; font-weight: 500;
-  padding: 4px 10px; border-radius: 20px;
-  margin-top: 10px;
-}
+.fire-badge { display: inline-flex; align-items: center; gap: 5px; background: var(--gold-bg); color: var(--gold); font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 20px; margin-top: 8px; }
 
-/* password overlay */
-.overlay {
-  position: fixed; inset: 0;
-  background: rgba(26,24,20,0.5);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 100;
-  opacity: 0; pointer-events: none; transition: opacity 0.2s;
-}
+/* Mood modal */
+.overlay { position: fixed; inset: 0; background: rgba(26,24,20,0.5); display: flex; align-items: center; justify-content: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
 .overlay.show { opacity: 1; pointer-events: all; }
-.pw-box {
-  background: var(--surface);
-  border-radius: 20px;
-  padding: 2.5rem;
-  width: 320px;
-  text-align: center;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-}
+.modal { background: var(--surface); border-radius: 20px; padding: 2rem; width: 340px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+.modal h2 { font-family: 'Playfair Display', serif; font-size: 20px; margin-bottom: 6px; }
+.modal p { font-size: 13px; color: var(--muted); margin-bottom: 1.5rem; }
+.emoji-row { display: flex; justify-content: center; gap: 12px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.emoji-btn { font-size: 28px; background: none; border: 2px solid transparent; border-radius: 12px; padding: 8px; cursor: pointer; transition: all 0.15s; line-height: 1; }
+.emoji-btn:hover { border-color: var(--border); transform: scale(1.15); }
+.emoji-btn.selected { border-color: var(--text); background: var(--bg); }
+.emoji-label { font-size: 10px; color: var(--muted); display: block; margin-top: 4px; }
+.modal textarea { width: 100%; border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; font-family: 'DM Sans', sans-serif; font-size: 13px; resize: none; background: var(--bg); outline: none; margin-bottom: 12px; transition: border 0.2s; }
+.modal textarea:focus { border-color: var(--text); }
+.modal textarea::placeholder { color: var(--muted); }
+.btn-primary { width: 100%; padding: 10px; background: var(--text); color: var(--bg); border: none; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 14px; cursor: pointer; margin-bottom: 8px; }
+.btn-secondary { background: none; border: none; font-size: 13px; color: var(--muted); cursor: pointer; font-family: 'DM Sans', sans-serif; }
+
+/* Password modal */
+.pw-box { background: var(--surface); border-radius: 20px; padding: 2.5rem; width: 320px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
 .pw-box h2 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 8px; }
 .pw-box p { font-size: 13px; color: var(--muted); margin-bottom: 1.5rem; }
-.pw-box input {
-  width: 100%; padding: 10px 14px;
-  border: 1px solid var(--border); border-radius: 10px;
-  font-family: 'DM Sans', sans-serif; font-size: 14px;
-  margin-bottom: 10px; background: var(--bg);
-  outline: none; transition: border 0.2s;
-}
+.pw-box input { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 14px; margin-bottom: 10px; background: var(--bg); outline: none; transition: border 0.2s; }
 .pw-box input:focus { border-color: var(--text); }
 .pw-box input.error { border-color: var(--absent); }
-.pw-box .btn-unlock {
-  width: 100%; padding: 10px;
-  background: var(--text); color: var(--bg);
-  border: none; border-radius: 10px;
-  font-family: 'DM Sans', sans-serif; font-size: 14px;
-  cursor: pointer; margin-bottom: 8px;
-}
-.pw-box .btn-cancel {
-  background: none; border: none;
-  font-size: 13px; color: var(--muted);
-  cursor: pointer; font-family: 'DM Sans', sans-serif;
-}
 
-/* toast */
-.toast {
-  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-  background: var(--text); color: var(--bg);
-  padding: 10px 22px; border-radius: 24px;
-  font-size: 13px; font-family: 'DM Sans', sans-serif;
-  opacity: 0; pointer-events: none; transition: opacity 0.3s;
-  z-index: 200;
-}
-.toast.show { opacity: 1; }
+/* Feedback panel (teacher only) */
+.feedback-panel { margin-top: 2.5rem; }
+.feedback-panel h3 { font-family: 'Playfair Display', serif; font-size: 20px; margin-bottom: 1rem; }
+.feedback-lesson { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem 1.5rem; margin-bottom: 12px; }
+.feedback-lesson-title { font-size: 13px; font-weight: 500; color: var(--muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+.feedback-row { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.feedback-row:last-child { border-bottom: none; }
+.fb-name { font-size: 13px; font-weight: 500; width: 70px; flex-shrink: 0; padding-top: 1px; }
+.fb-emoji { font-size: 18px; flex-shrink: 0; }
+.fb-text { font-size: 13px; color: var(--muted); font-style: italic; }
 
-/* legend */
-.legend {
-  display: flex; gap: 20px; margin-bottom: 1.5rem;
-  font-size: 12px; color: var(--muted); flex-wrap: wrap;
-}
+.legend { display: flex; gap: 20px; margin-bottom: 1.5rem; font-size: 12px; color: var(--muted); flex-wrap: wrap; }
 .legend-item { display: flex; align-items: center; gap: 6px; }
 .ldot-sm { width: 12px; height: 12px; border-radius: 50%; }
+
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 10px 22px; border-radius: 24px; font-size: 13px; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 200; }
+.toast.show { opacity: 1; }
 
 @media (max-width: 600px) {
   header { padding: 1.5rem 1rem 1rem; }
@@ -268,7 +128,8 @@ main { max-width: 900px; margin: 0 auto; padding: 2rem; }
   </div>
   <div class="mode-toggle">
     <button class="mode-btn active" id="btn-view" onclick="setMode('view')">View</button>
-    <button class="mode-btn" id="btn-edit" onclick="requestEdit()">&#9998; Mark attendance</button>
+    <button class="mode-btn" id="btn-mood" onclick="openMoodPicker()">😄 My mood</button>
+    <button class="mode-btn" id="btn-edit" onclick="requestEdit()">✏️ Teacher</button>
   </div>
 </header>
 
@@ -279,17 +140,37 @@ main { max-width: 900px; margin: 0 auto; padding: 2rem; }
     <span class="legend-item"><span class="ldot-sm" style="background:var(--present)"></span>Present</span>
     <span class="legend-item"><span class="ldot-sm" style="background:var(--absent)"></span>Absent</span>
     <span class="legend-item"><span class="ldot-sm" style="background:var(--bg);border:1.5px solid var(--border)"></span>Upcoming</span>
+    <span class="legend-item">😄 Mood below dot</span>
   </div>
   <div class="cards" id="cards"></div>
+  <div class="feedback-panel" id="feedback-panel" style="display:none;"></div>
 </main>
 
-<div class="overlay" id="overlay">
+<!-- Password overlay -->
+<div class="overlay" id="pw-overlay">
   <div class="pw-box">
     <h2>Teacher mode</h2>
-    <p>Enter the password to mark attendance</p>
+    <p>Enter the password to mark attendance and view feedback</p>
     <input type="password" id="pw-input" placeholder="Password" />
-    <button class="btn-unlock" onclick="checkPw()">Unlock</button>
-    <button class="btn-cancel" onclick="closeOverlay()">Cancel</button>
+    <button class="btn-primary" onclick="checkPw()">Unlock</button>
+    <button class="btn-secondary" onclick="closePw()">Cancel</button>
+  </div>
+</div>
+
+<!-- Mood overlay -->
+<div class="overlay" id="mood-overlay">
+  <div class="modal">
+    <h2>How was the lesson?</h2>
+    <p id="mood-subtitle">Pick your mood and leave a note</p>
+    <div style="margin-bottom:1rem;">
+      <select id="mood-student" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;background:var(--bg);margin-bottom:12px;outline:none;">
+        <option value="">— Select your name —</option>
+      </select>
+    </div>
+    <div class="emoji-row" id="emoji-row"></div>
+    <textarea id="mood-text" rows="3" placeholder="Any thoughts about the lesson? (optional — only teacher sees this)"></textarea>
+    <button class="btn-primary" onclick="submitMood()">Save</button>
+    <button class="btn-secondary" onclick="closeMood()">Cancel</button>
   </div>
 </div>
 
@@ -300,6 +181,14 @@ const STUDENTS = ["Polina","Nadya","Katya","Ivana","Lena","Tanya"];
 const TOTAL = 10;
 const PASS = "latin2026";
 const STORAGE_KEY = "latin_tracker_2026";
+
+const MOODS = [
+  { emoji: "😄", label: "Great" },
+  { emoji: "🙂", label: "Good" },
+  { emoji: "😐", label: "Okay" },
+  { emoji: "😵", label: "Hard" },
+  { emoji: "😴", label: "Boring" },
+];
 
 const COLORS = {
   Polina: {bg:'#d8f3dc', text:'#1b4332'},
@@ -317,84 +206,152 @@ const SATURDAYS = (() => {
 })();
 
 const today = new Date();
-const isPast = i => SATURDAYS[i] <= today;
+const isPast = i => SATURDAYS[i] < today;
 const isToday = i => {
   const s = SATURDAYS[i];
   return s.getFullYear()===today.getFullYear()&&s.getMonth()===today.getMonth()&&s.getDate()===today.getDate();
 };
 
-let attendance = {};
+// State
+let attendance = {};  // {student: [null/true/false, ...]}
+let moods = {};       // {student: [{emoji, text}, null, ...]}
 let editMode = false;
 let unlocked = false;
+let selectedMoodEmoji = null;
 
+STUDENTS.forEach(s => {
+  attendance[s] = Array(TOTAL).fill(null);
+  moods[s] = Array(TOTAL).fill(null);
+});
+
+// Storage
 function loadData() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       const saved = JSON.parse(raw);
-      STUDENTS.forEach(s => { attendance[s] = saved[s] || Array(TOTAL).fill(null); });
-    } else {
-      STUDENTS.forEach(s => { attendance[s] = Array(TOTAL).fill(null); });
+      STUDENTS.forEach(s => {
+        if (saved.attendance && saved.attendance[s]) attendance[s] = saved.attendance[s];
+        if (saved.moods && saved.moods[s]) moods[s] = saved.moods[s];
+      });
     }
-  } catch(e) {
-    STUDENTS.forEach(s => { attendance[s] = Array(TOTAL).fill(null); });
-  }
+  } catch(e) {}
+  buildMoodUI();
   render();
 }
 
 function saveData() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(attendance)); } catch(e) {}
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify({attendance, moods})); } catch(e) {}
 }
 
+// Mode
+function setMode(m) {
+  editMode = m === 'edit';
+  document.getElementById('btn-view').classList.toggle('active', m==='view');
+  document.getElementById('btn-edit').classList.toggle('active', m==='edit');
+  document.getElementById('btn-mood').classList.toggle('active', false);
+  document.getElementById('feedback-panel').style.display = (m==='edit') ? 'block' : 'none';
+  render();
+  if (m==='edit') renderFeedback();
+}
+
+// Password
 function requestEdit() {
   if (unlocked) { setMode('edit'); return; }
-  document.getElementById('overlay').classList.add('show');
+  document.getElementById('pw-overlay').classList.add('show');
   setTimeout(() => document.getElementById('pw-input').focus(), 100);
 }
-
-function closeOverlay() {
-  document.getElementById('overlay').classList.remove('show');
+function closePw() {
+  document.getElementById('pw-overlay').classList.remove('show');
   document.getElementById('pw-input').value = '';
-  document.getElementById('pw-input').classList.remove('error');
 }
-
 function checkPw() {
-  const v = document.getElementById('pw-input').value;
-  if (v === PASS) {
-    unlocked = true;
-    closeOverlay();
-    setMode('edit');
-    showToast("Teacher mode unlocked");
+  if (document.getElementById('pw-input').value === PASS) {
+    unlocked = true; closePw(); setMode('edit'); showToast("Teacher mode unlocked ✓");
   } else {
     const inp = document.getElementById('pw-input');
-    inp.classList.add('error');
-    inp.value = '';
+    inp.classList.add('error'); inp.value = '';
     setTimeout(() => inp.classList.remove('error'), 1000);
   }
 }
-
 document.getElementById('pw-input').addEventListener('keydown', e => { if(e.key==='Enter') checkPw(); });
-document.getElementById('overlay').addEventListener('click', e => { if(e.target===document.getElementById('overlay')) closeOverlay(); });
+document.getElementById('pw-overlay').addEventListener('click', e => { if(e.target===document.getElementById('pw-overlay')) closePw(); });
 
-function setMode(m) {
-  editMode = m === 'edit';
-  document.getElementById('btn-view').classList.toggle('active', !editMode);
-  document.getElementById('btn-edit').classList.toggle('active', editMode);
-  render();
-}
-
+// Attendance toggle
 function toggle(student, lesson) {
   if (!editMode || (!isPast(lesson) && !isToday(lesson))) return;
   const cur = attendance[student][lesson];
   attendance[student][lesson] = cur === null ? true : cur === true ? false : null;
-  saveData(); render();
-  const label = cur === null ? 'Present ✓' : cur === true ? 'Absent ✗' : 'Cleared';
-  showToast(`${student} — ${label}`);
+  // Clear mood if marked absent
+  if (attendance[student][lesson] === false) moods[student][lesson] = null;
+  saveData(); render(); renderFeedback();
+  showToast(cur===null ? `${student} — present ✓` : cur===true ? `${student} — absent ✗` : `${student} — cleared`);
 }
 
+// Mood picker
+function buildMoodUI() {
+  // Student select
+  const sel = document.getElementById('mood-student');
+  STUDENTS.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s; opt.textContent = s;
+    sel.appendChild(opt);
+  });
+  // Emoji buttons
+  const row = document.getElementById('emoji-row');
+  MOODS.forEach(m => {
+    const btn = document.createElement('div');
+    btn.style.textAlign = 'center';
+    btn.innerHTML = `<button class="emoji-btn" onclick="selectEmoji('${m.emoji}',this)">${m.emoji}</button><span class="emoji-label">${m.label}</span>`;
+    row.appendChild(btn);
+  });
+}
+
+function selectEmoji(emoji, btn) {
+  selectedMoodEmoji = emoji;
+  document.querySelectorAll('.emoji-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function openMoodPicker() {
+  // Find current/most recent past lesson
+  let lessonIdx = -1;
+  for (let i = TOTAL-1; i >= 0; i--) {
+    if (isPast(i) || isToday(i)) { lessonIdx = i; break; }
+  }
+  if (lessonIdx === -1) { showToast("No lessons yet!"); return; }
+  document.getElementById('mood-overlay').dataset.lesson = lessonIdx;
+  document.getElementById('mood-subtitle').textContent =
+    `Lesson ${lessonIdx+1} · ${SATURDAYS[lessonIdx].toLocaleDateString('en-GB',{day:'numeric',month:'long'})}`;
+  document.getElementById('mood-student').value = '';
+  document.getElementById('mood-text').value = '';
+  selectedMoodEmoji = null;
+  document.querySelectorAll('.emoji-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('mood-overlay').classList.add('show');
+}
+
+function closeMood() {
+  document.getElementById('mood-overlay').classList.remove('show');
+}
+
+function submitMood() {
+  const student = document.getElementById('mood-student').value;
+  const lesson = parseInt(document.getElementById('mood-overlay').dataset.lesson);
+  const text = document.getElementById('mood-text').value.trim();
+  if (!student) { showToast("Please select your name!"); return; }
+  if (!selectedMoodEmoji) { showToast("Please pick an emoji!"); return; }
+  if (attendance[student][lesson] !== true) { showToast(`${student} wasn't marked present for this lesson`); return; }
+  moods[student][lesson] = { emoji: selectedMoodEmoji, text };
+  saveData(); closeMood(); render();
+  if (unlocked) renderFeedback();
+  showToast(`${student} — mood saved ${selectedMoodEmoji}`);
+}
+
+document.getElementById('mood-overlay').addEventListener('click', e => { if(e.target===document.getElementById('mood-overlay')) closeMood(); });
+
+// Stats helpers
 function countPresent(s) { return attendance[s].filter((v,i)=>v===true&&(isPast(i)||isToday(i))).length; }
 function totalPast() { let n=0; for(let i=0;i<TOTAL;i++) if(isPast(i)||isToday(i)) n++; return n; }
-
 function currentStreak(s) {
   let streak=0;
   for(let i=TOTAL-1;i>=0;i--) {
@@ -403,19 +360,15 @@ function currentStreak(s) {
   }
   return streak;
 }
-
 function longestStreak(s) {
   let best=0,cur=0;
   for(let i=0;i<TOTAL;i++) {
-    if(isPast(i)||isToday(i)) {
-      if(attendance[s][i]===true){cur++;best=Math.max(best,cur);}else cur=0;
-    }
+    if(isPast(i)||isToday(i)) { if(attendance[s][i]===true){cur++;best=Math.max(best,cur);}else cur=0; }
   }
   return best;
 }
 
-function fmtDate(d) { return d.toLocaleDateString('en-GB',{day:'numeric',month:'short'}); }
-
+// Render
 function render() {
   const past = totalPast();
   const totalP = STUDENTS.reduce((a,s)=>a+countPresent(s),0);
@@ -426,7 +379,7 @@ function render() {
   document.getElementById('summary').innerHTML = `
     <div class="metric"><div class="metric-label">Lessons done</div><div class="metric-val">${past}<span style="font-size:16px;color:var(--muted)"> / ${TOTAL}</span></div></div>
     <div class="metric"><div class="metric-label">Class attendance</div><div class="metric-val">${classRate}<span style="font-size:16px;color:var(--muted)">%</span></div></div>
-    <div class="metric"><div class="metric-label">Best streak</div><div class="metric-val">${bestStreak} <span style="font-size:20px">&#128293;</span></div></div>
+    <div class="metric"><div class="metric-label">Best streak</div><div class="metric-val">${bestStreak} <span style="font-size:20px">🔥</span></div></div>
     <div class="metric"><div class="metric-label">Star student</div><div class="metric-val" style="font-size:20px">${topS}</div></div>
   `;
 
@@ -445,13 +398,15 @@ function render() {
       const val = attendance[student][i];
       const p = isPast(i)||isToday(i);
       let cls = p ? (val===true?'present':val===false?'absent':'') : '';
-      const cur = editMode&&p ? 'pointer' : 'default';
-      dots += `<div class="ldot ${cls}" onclick="toggle('${student}',${i})" style="cursor:${cur}" aria-label="Lesson ${i+1}">
-        <span class="lesson-tip">Lesson ${i+1} · ${fmtDate(SATURDAYS[i])}</span>
+      const cursor = editMode&&p ? 'pointer' : 'default';
+      const moodEmoji = (val===true && moods[student][i]) ? moods[student][i].emoji : '';
+      dots += `<div class="dot-wrap" onclick="toggle('${student}',${i})" style="cursor:${cursor}" title="Lesson ${i+1}: ${SATURDAYS[i].toLocaleDateString('en-GB',{day:'numeric',month:'short'})}">
+        <div class="ldot ${cls}"></div>
+        <div class="dot-emoji">${moodEmoji}</div>
       </div>`;
     }
 
-    const fire = cs>=3 ? `<div class="fire-badge">&#128293; ${cs} in a row</div>` : '';
+    const fire = cs>=3 ? `<div class="fire-badge">🔥 ${cs} in a row</div>` : '';
 
     const card = document.createElement('div');
     card.className = 'card';
@@ -475,11 +430,47 @@ function render() {
   });
 }
 
+function renderFeedback() {
+  const panel = document.getElementById('feedback-panel');
+  let html = '<h3>Student Feedback</h3>';
+  let hasAny = false;
+
+  for(let i=0;i<TOTAL;i++) {
+    const lessonFeedback = STUDENTS.map(s => ({
+      student: s,
+      mood: moods[s][i],
+      present: attendance[s][i] === true
+    })).filter(f => f.present && f.mood);
+
+    if(lessonFeedback.length === 0) continue;
+    hasAny = true;
+
+    html += `<div class="feedback-lesson">
+      <div class="feedback-lesson-title">Lesson ${i+1} · ${SATURDAYS[i].toLocaleDateString('en-GB',{day:'numeric',month:'long'})}</div>`;
+
+    lessonFeedback.forEach(f => {
+      const col = COLORS[f.student] || {bg:'#f0f0f0',text:'#333'};
+      html += `<div class="feedback-row">
+        <span class="fb-name" style="color:${col.text}">${f.student}</span>
+        <span class="fb-emoji">${f.mood.emoji}</span>
+        <span class="fb-text">${f.mood.text || '<em style="opacity:0.5">no comment</em>'}</span>
+      </div>`;
+    });
+
+    html += '</div>';
+  }
+
+  if (!hasAny) {
+    html += '<p style="color:var(--muted);font-size:13px;">No feedback yet — students submit it using the 😄 My mood button.</p>';
+  }
+
+  panel.innerHTML = html;
+}
+
 function showToast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 2000);
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500);
 }
 
 loadData();
