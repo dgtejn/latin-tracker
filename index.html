@@ -116,8 +116,14 @@ main { max-width: 960px; margin: 0 auto; padding: 2rem; }
   .header-left h1 { font-size: 24px; }
 }
 </style>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 </head>
 <body>
+
+<div id="loading" style="position:fixed;inset:0;background:#faf8f4;display:flex;align-items:center;justify-content:center;z-index:999;font-family:'DM Sans',sans-serif;color:#8a8278;font-size:14px;">
+  Loading tracker data&hellip;
+</div>
 
 <div class="top-strip">DISCIPULI · PRAESENTES · ABSENTES · SEMPER DISCENDUM</div>
 
@@ -177,7 +183,7 @@ main { max-width: 960px; margin: 0 auto; padding: 2rem; }
 <div class="toast" id="toast"></div>
 
 <script>
-const STUDENTS = ["Polina","Nadya","Katya","Ivana","Lena","Tanya"];
+const STUDENTS = ["Polina","Nadya","Katya","Ivana","Lena","Tanya","Maria"];
 const TOTAL = 10;
 const PASS = "latin2026";
 const STORAGE_KEY = "latin_tracker_2026";
@@ -197,6 +203,7 @@ const COLORS = {
   Ivana:  {bg:'#dbeafe', text:'#1e3a5f'},
   Lena:   {bg:'#ede9f7', text:'#3b2a6e'},
   Tanya:  {bg:'#fef3d8', text:'#7c4a00'},
+  Maria:  {bg:'#e0f2f1', text:'#00695c'},
 };
 
 const SATURDAYS = (() => {
@@ -224,24 +231,50 @@ STUDENTS.forEach(s => {
   moods[s] = Array(TOTAL).fill(null);
 });
 
+// Firebase setup
+const firebaseConfig = {
+  apiKey: "AIzaSyAU1yBUKj2Na5wOe0cxdtP303y5ZC_preg",
+  authDomain: "latin-tracker.firebaseapp.com",
+  databaseURL: "https://latin-tracker-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "latin-tracker",
+  storageBucket: "latin-tracker.firebasestorage.app",
+  messagingSenderId: "723091135899",
+  appId: "1:723091135899:web:71eba2e6eaa8c1f517953e"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const dataRef = db.ref('latin_tracker_2026');
+
+let isFirstLoad = true;
+let dataLoaded = false;
+
 // Storage
 function loadData() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      const saved = JSON.parse(raw);
+  buildMoodUI();
+  dataRef.on('value', (snapshot) => {
+    const saved = snapshot.val();
+    if (saved) {
       STUDENTS.forEach(s => {
         if (saved.attendance && saved.attendance[s]) attendance[s] = saved.attendance[s];
         if (saved.moods && saved.moods[s]) moods[s] = saved.moods[s];
       });
     }
-  } catch(e) {}
-  buildMoodUI();
-  render();
+    dataLoaded = true;
+    render();
+    if (unlocked) renderFeedback();
+    if (isFirstLoad) {
+      isFirstLoad = false;
+      document.getElementById('loading').style.display = 'none';
+    }
+  });
 }
 
 function saveData() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify({attendance, moods})); } catch(e) {}
+  if (!dataLoaded) {
+    showToast("Still loading, please wait a moment...");
+    return;
+  }
+  dataRef.set({attendance, moods});
 }
 
 // Mode
@@ -279,6 +312,7 @@ document.getElementById('pw-overlay').addEventListener('click', e => { if(e.targ
 
 // Attendance toggle
 function toggle(student, lesson) {
+  if (!dataLoaded) { showToast("Still loading, please wait..."); return; }
   if (!editMode || (!isPast(lesson) && !isToday(lesson))) return;
   const cur = attendance[student][lesson];
   attendance[student][lesson] = cur === null ? true : cur === true ? false : null;
@@ -335,6 +369,7 @@ function closeMood() {
 }
 
 function submitMood() {
+  if (!dataLoaded) { showToast("Still loading, please wait..."); return; }
   const student = document.getElementById('mood-student').value;
   const lesson = parseInt(document.getElementById('mood-overlay').dataset.lesson);
   const text = document.getElementById('mood-text').value.trim();
@@ -374,7 +409,13 @@ function render() {
   const totalP = STUDENTS.reduce((a,s)=>a+countPresent(s),0);
   const classRate = past>0 ? Math.round(totalP/(STUDENTS.length*past)*100) : 0;
   const bestStreak = past>0 ? Math.max(...STUDENTS.map(s=>currentStreak(s))) : 0;
-  const topS = past>0 ? STUDENTS.reduce((a,b)=>countPresent(a)>=countPresent(b)?a:b) : '—';
+  let topS = '—';
+  if (past>0) {
+    const counts = STUDENTS.map(s=>countPresent(s));
+    const maxC = Math.max(...counts);
+    const allTied = counts.every(c=>c===maxC);
+    topS = allTied ? 'Everyone! 🎉' : STUDENTS.reduce((a,b)=>countPresent(a)>=countPresent(b)?a:b);
+  }
 
   document.getElementById('summary').innerHTML = `
     <div class="metric"><div class="metric-label">Lessons done</div><div class="metric-val">${past}<span style="font-size:16px;color:var(--muted)"> / ${TOTAL}</span></div></div>
