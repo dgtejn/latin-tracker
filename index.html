@@ -116,14 +116,8 @@ main { max-width: 960px; margin: 0 auto; padding: 2rem; }
   .header-left h1 { font-size: 24px; }
 }
 </style>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 </head>
 <body>
-
-<div id="loading" style="position:fixed;inset:0;background:#faf8f4;display:flex;align-items:center;justify-content:center;z-index:999;font-family:'DM Sans',sans-serif;color:#8a8278;font-size:14px;">
-  Loading tracker data&hellip;
-</div>
 
 <div class="top-strip">DISCIPULI · PRAESENTES · ABSENTES · SEMPER DISCENDUM</div>
 
@@ -230,44 +224,24 @@ STUDENTS.forEach(s => {
   moods[s] = Array(TOTAL).fill(null);
 });
 
-// Firebase setup
-const firebaseConfig = {
-  apiKey: "AIzaSyAU1yBUKj2Na5wOe0cxdtP303y5ZC_preg",
-  authDomain: "latin-tracker.firebaseapp.com",
-  databaseURL: "https://latin-tracker-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "latin-tracker",
-  storageBucket: "latin-tracker.firebasestorage.app",
-  messagingSenderId: "723091135899",
-  appId: "1:723091135899:web:71eba2e6eaa8c1f517953e"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-const dataRef = db.ref('latin_tracker_2026');
-
-let isFirstLoad = true;
-
 // Storage
 function loadData() {
-  buildMoodUI();
-  dataRef.on('value', (snapshot) => {
-    const saved = snapshot.val();
-    if (saved) {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const saved = JSON.parse(raw);
       STUDENTS.forEach(s => {
         if (saved.attendance && saved.attendance[s]) attendance[s] = saved.attendance[s];
         if (saved.moods && saved.moods[s]) moods[s] = saved.moods[s];
       });
     }
-    render();
-    if (unlocked) renderFeedback();
-    if (isFirstLoad) {
-      isFirstLoad = false;
-      document.getElementById('loading').style.display = 'none';
-    }
-  });
+  } catch(e) {}
+  buildMoodUI();
+  render();
 }
 
 function saveData() {
-  dataRef.set({attendance, moods});
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify({attendance, moods})); } catch(e) {}
 }
 
 // Mode
